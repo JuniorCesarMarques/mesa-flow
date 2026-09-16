@@ -1,17 +1,18 @@
 import PersonalizadoClient from "@/components/PersonalizadoClient";
+import {
+  getConfigsBySlug,
+  getIngredientsBySlug,
+} from "@/repositories/ingredients.repository";
 
+export default async function Personalizado({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-export default async function Personalizado({params}: {params: Promise<{slug: string}>}){
+  const configs = await getConfigsBySlug(slug);
+  const ingredientes = await getIngredientsBySlug(slug);
 
-    const baseURL = process.env.NEXT_PUBLIC_APP_URL;
-
-    const {slug} = await params;
-
-    const res = await fetch(`${baseURL}/api/ingredients/${slug}`);
-
-    const ingredients = await res.json();
-
-    return (
-        <PersonalizadoClient ingredients={ingredients} />
-    )
+  return <PersonalizadoClient ingredients={ingredientes} configs={configs} />;
 }
