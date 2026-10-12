@@ -7,7 +7,7 @@ export default function IngredientsList({
   ingredients: Ingredient[];
 }) {
   return (
-    <div>
+    <div className="flex gap-2 flex-wrap">
       {ingredients.map((i) => (
         <IngredientCard
           ingredient={i}

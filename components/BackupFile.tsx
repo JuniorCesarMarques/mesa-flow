@@ -114,7 +114,7 @@ export default function Home() {
     <main>
       {/* HERO */}
 
-      <HomeHero />
+      <HomeHero logoPath=""/>
       {/* DESTAQUES */}
       <OpenModalButton onOpen={openFormModal} />
 

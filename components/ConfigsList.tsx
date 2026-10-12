@@ -13,7 +13,7 @@ export default function ConfigsList({
   handleSelected,
 }: ConfigsListProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 flex-wrap">
       {configs.map((config) => (
         <ConfigCard
           selected={selected === config.id}
