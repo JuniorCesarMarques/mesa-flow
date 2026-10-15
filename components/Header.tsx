@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import MenuOptions from "./MenuOptions";
 import { useParams } from "next/navigation";
+import { Session } from "@/types/session";
 
 export type MenuOptionsType = {
   label: string;
   href: string;
 };
 
-export default function Header() {
+export type HeaderProps = {
+  storeName: string;
+  session: Session | null;
+};
+
+export default function Header({ storeName, session }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { slug } = useParams();
 
@@ -18,7 +24,7 @@ export default function Header() {
     { label: "Início", href: "/" },
     { label: "Sobre", href: "/" },
     { label: "Contato", href: "/" },
-    { label: "Configurações", href: `/${slug}/config` },
+    ...(session ? [{ label: "Configurações", href: `/${slug}/config` }] : [])
   ];
 
   useEffect(() => {
@@ -29,23 +35,22 @@ export default function Header() {
     });
   }, []);
 
-
   return (
     <header className="w-full bg-white fixed top-0 z-10">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <div className="flex items-center gap-2">
-            <Image
-              className="rounded-full"
-              src="/imagens/logo-fallback.png"
-              alt="Logo"
-              width={80}
-              height={80}
-              unoptimized
-            />
+          <Image
+            className="rounded-full"
+            src="/imagens/logo-fallback.png"
+            alt="Logo"
+            width={80}
+            height={80}
+            unoptimized
+          />
 
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Pastel Café</h1>
+            <h1 className="text-xl font-bold text-gray-900">{storeName}</h1>
 
             <p className="text-xs text-gray-500">Sabor que conquista</p>
           </div>

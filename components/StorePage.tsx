@@ -19,10 +19,10 @@ export type FormMode = "creating" | "editing";
 
 type StorePage = {
   canManageStore: boolean;
-  store: string;
+  slugStore: string;
 };
 
-export default function StorePage({ canManageStore, store }: StorePage) {
+export default function StorePage({ canManageStore, slugStore }: StorePage) {
   const [modalState, setModalState] = useState(false);
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -46,7 +46,7 @@ export default function StorePage({ canManageStore, store }: StorePage) {
             ? await uploadImage(
                 imgFromData,
                 "store-platform-assets",
-                `${store}/products`,
+                `${slugStore}/products`,
               )
             : imgFromData;
 
@@ -99,7 +99,7 @@ export default function StorePage({ canManageStore, store }: StorePage) {
     (async () => {
       try {
         setProductsLoading(true);
-        const res = await fetch(`/api/produtos/${store}`);
+        const res = await fetch(`/api/produtos/${slugStore}`);
 
         setProductsLoading(false);
 
@@ -119,7 +119,7 @@ export default function StorePage({ canManageStore, store }: StorePage) {
     (async () => {
       setBannerLoading(true);
       try {
-        const res = await fetch(`/api/appearence/${store}`);
+        const res = await fetch(`/api/appearence/${slugStore}`);
 
         setBannerLoading(false);
 

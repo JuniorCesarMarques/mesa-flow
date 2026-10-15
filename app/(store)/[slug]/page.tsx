@@ -22,5 +22,5 @@ export default async function StorePageServer({
 
   const canManageStore = !!session;
 
-  return <StorePage canManageStore={canManageStore} store={slug} />;
+  return <StorePage canManageStore={canManageStore} slugStore={slug} />;
 }
