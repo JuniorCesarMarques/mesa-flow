@@ -13,10 +13,11 @@ export type MenuOptionsType = {
 
 export type HeaderProps = {
   storeName: string;
+  storeLogo: string;
   session: Session | null;
 };
 
-export default function Header({ storeName, session }: HeaderProps) {
+export default function Header({ storeName, storeLogo, session }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { slug } = useParams();
 
@@ -42,7 +43,7 @@ export default function Header({ storeName, session }: HeaderProps) {
         <div className="flex items-center gap-2">
           <Image
             className="rounded-full"
-            src="/imagens/logo-fallback.png"
+            src={storeLogo}
             alt="Logo"
             width={80}
             height={80}

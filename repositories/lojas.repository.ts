@@ -1,5 +1,9 @@
 import { pool } from "@/lib/db";
 
+export async function getAllStores(){
+    const res = await pool.query("")
+}
+
 export async function getStoreBySlug(slug: string){
     const res = await pool.query(`
         SELECT 

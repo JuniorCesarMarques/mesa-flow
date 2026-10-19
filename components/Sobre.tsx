@@ -7,13 +7,11 @@ export default function Sobre(){
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 md:grid-cols-2">
           <div>
             <h2 className="text-4xl font-bold">
-              Uma cozinha feita para criar memórias.
+              Comida saudável, feita com carinho.
             </h2>
 
             <p className="mt-6 text-lg text-gray-600">
-              Nossa pastelaria combina ingredientes selecionados, técnicas
-              cuidadosas e um ambiente acolhedor para oferecer uma experiência
-              gastronômica completa.
+              A Tofit combina ingredientes selecionados, preparo cuidadoso e muito carinho em cada refeição, oferecendo marmitas saborosas e equilibradas para fazer parte da sua rotina.
             </p>
 
             <button className="mt-8 rounded-xl bg-orange-500 px-8 py-4 font-semibold text-white hover:bg-orange-600">

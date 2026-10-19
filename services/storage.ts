@@ -25,15 +25,14 @@ export async function uploadImage(file: File, bucket: string, path: string) {
 }
 
 export async function deleteImage(publicUrl: string) {
-
   const prefix = "/storage/v1/object/public/store-platform-assets/";
 
   const path = publicUrl.split(prefix)[1];
 
-const { data, error } = await supabase.storage
-  .from("store-platform-assets")
-  .remove([path]);
+  const { data, error } = await supabase.storage
+    .from("store-platform-assets")
+    .remove([path]);
 
-console.log("REMOVE DATA:", data);
-console.log("REMOVE ERROR:", error);
+  console.log("REMOVE DATA:", data);
+  console.log("REMOVE ERROR:", error);
 }

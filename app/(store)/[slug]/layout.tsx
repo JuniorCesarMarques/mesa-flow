@@ -4,6 +4,19 @@ import { getSession } from "@/services/auth.service";
 import { notFound } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const loja = await getStoreBySlug(slug);
+
+  return {
+    title: loja.name,
+  };
+}
+
 export default async function PlatformLayout({
   children,
   params,
@@ -18,14 +31,17 @@ export default async function PlatformLayout({
     getStoreBySlug(slug),
   ]);
 
-
   if (!storeInfo) {
     notFound();
   }
 
   return (
     <>
-      <Header storeName={storeInfo.name} session={session} />
+      <Header
+        storeName={storeInfo.name}
+        storeLogo={storeInfo.logo_path}
+        session={session}
+      />
       {children}
       <Toaster />
     </>
