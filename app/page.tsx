@@ -11,14 +11,11 @@ import {
   Truck,
   Zap,
 } from "lucide-react";
-import Header from "@/components/platform/Header";
+
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-zinc-900">
-      {/* Header */}
-      <Header />
-
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute -right-40 -top-40 h-96 w-96 rounded-full bg-orange-100 blur-3xl" />

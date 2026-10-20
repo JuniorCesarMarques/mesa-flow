@@ -1,7 +1,10 @@
 import { pool } from "@/lib/db";
+import { Store } from "@/types/Store";
 
-export async function getAllStores(){
-    const res = await pool.query("")
+export async function getAllStores(userId: string){
+    const res = await pool.query<Store>("SELECT * FROM lojas WHERE user_id = $1", [userId]);
+
+    return res.rows ?? null;
 }
 
 export async function getStoreBySlug(slug: string){

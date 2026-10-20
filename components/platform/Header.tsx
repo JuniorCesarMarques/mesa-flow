@@ -4,7 +4,6 @@ import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 
 export default async function Header() {
-    
   const session = await getSession();
 
   const logged = !!session;
@@ -23,10 +22,6 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-zinc-600 md:flex">
-          <a href="#recursos" className="transition hover:text-zinc-900">
-            Recursos
-          </a>
-
           <a href="#como-funciona" className="transition hover:text-zinc-900">
             Como funciona
           </a>
@@ -38,6 +33,8 @@ export default async function Header() {
           <a href="#precos" className="transition hover:text-zinc-900">
             Preços
           </a>
+
+          {logged && <Link href="/painel">Painel</Link>}
         </nav>
 
         <div className="flex items-center gap-3">
