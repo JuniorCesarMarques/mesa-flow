@@ -38,6 +38,7 @@ export default function LoginPage() {
       toast.success("Logado com sucesso");
 
       router.push("/painel");
+      router.refresh();
     } catch (err) {
         toast.error("Algo deu errado.")
     }

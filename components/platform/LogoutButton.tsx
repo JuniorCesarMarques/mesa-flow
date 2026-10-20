@@ -27,7 +27,7 @@ export default function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="hidden text-sm font-medium text-zinc-600 transition hover:text-zinc-900 sm:block"
+      className="hidden text-sm font-medium text-zinc-600 transition hover:text-zinc-900 sm:block cursor-pointer"
     >
       Sair
     </button>
