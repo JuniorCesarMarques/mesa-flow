@@ -53,6 +53,7 @@ export default function StorePage({ canManageStore, slugStore }: StorePage) {
         const isNewImage = !(typeof imagem === "string" || imagem === null);
 
         const updatedProduct = {
+          slugStore,
           ...data,
           id: selectedProduct.id,
           imagem: isNewImage ? imagem.publicUrl : imagem,

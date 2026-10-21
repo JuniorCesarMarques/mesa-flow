@@ -1,3 +1,4 @@
+import { getStoreBySlug } from "@/repositories/lojas.repository";
 import {
   deleteProducts,
   getAllProducts,
@@ -71,7 +72,13 @@ export async function PUT(req: Request) {
 
     const body = await req.json();
 
-    const updated = await updateProduct(body);
+    const store = await getStoreBySlug(body.slugStore);
+
+    if(store.user_id !== session.user_id){
+      return Response.json({ error: "Não autenticado" }, { status: 401 });
+    }
+
+    const updated = await updateProduct(body, session.user_id);
 
     if (updated === 0) {
       return Response.json(

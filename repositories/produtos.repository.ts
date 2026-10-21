@@ -2,7 +2,8 @@ import { pool } from "@/lib/db";
 import { Product } from "@/types/product";
 
 export const getAllProducts = async (slug: string) => {
-  const res = await pool.query(`
+  const res = await pool.query(
+    `
     SELECT
      B.*
     FROM
@@ -11,21 +12,25 @@ export const getAllProducts = async (slug: string) => {
       produtos AS B
     ON
       A.id = B.loja_id
-    WHERE A.slug = $1;`, [slug]);
+    WHERE A.slug = $1;`,
+    [slug],
+  );
 
   return res.rows;
 };
 
-export async function insertProduct(product: Product){
+export async function insertProduct(product: Product) {
+  const { nome, descricao, preco, imagem, disponivel } = product;
 
-    const {nome, descricao, preco, imagem, disponivel} = product;
-
-    const res = await pool.query(`
+  const res = await pool.query(
+    `
         INSERT INTO
             produtos (nome, descricao, preco, imagem, disponivel)
-        VALUES(?, ?, ?, ?, ?)`, [nome, descricao, preco, imagem, disponivel]);
+        VALUES(?, ?, ?, ?, ?)`,
+    [nome, descricao, preco, imagem, disponivel],
+  );
 
-    return res.rowCount;
+  return res.rowCount;
 }
 
 export const deleteProducts = (ids: number[]) => {
@@ -34,7 +39,10 @@ export const deleteProducts = (ids: number[]) => {
   return pool.query(`DELETE FROM products WHERE id IN (${placeholders})`, ids);
 };
 
-export const updateProduct = async (product: Product) => {
+export const updateProduct = async (
+  product: Product,
+  user_id: string,
+) => {
   const { id, nome, descricao, preco, imagem, disponivel } = product;
 
   const res = await pool.query(

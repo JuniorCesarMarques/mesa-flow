@@ -55,7 +55,7 @@ function StorePreview({ slug }: { slug: string }) {
 
 export default function StoresList({ stores }: Props) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 pt-15">
       {stores.map((store) => (
         <article
           key={store.id}
