@@ -12,12 +12,11 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
-
     const { slug } = await params;
 
     const produtos = await getAllProducts(slug);
 
-    console.log(produtos)
+    console.log(produtos);
 
     return Response.json(produtos, { status: 200 });
   } catch (err) {
@@ -30,29 +29,42 @@ export async function GET(
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> },
+) {
   try {
     const session = await getSession();
+
+    const { slug } = await params;
+
+    const store = await getStoreBySlug(slug);
+
+    console.log(slug);
 
     if (!session) {
       return Response.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    const body = await req.json();
-
-    const inserted = await insertProduct(body);
-
-    if (inserted === 0) {
+    if (session.user_id !== store.user_id) {
       return Response.json(
-        { error: "Não foi possivel cadastrar o produto!" },
-        { status: 400 },
+        { error: "Sem permissão para acessar esta loja" },
+        { status: 403 },
       );
     }
 
-    return Response.json(
-      { message: "Produto criado com sucesso" },
-      { status: 201 },
-    );
+    const body = await req.json();
+
+    const product = await insertProduct(body, store.id);
+
+    if (!product) {
+      return Response.json(
+        { error: "Não foi possivel cadastrar o produto!" },
+        { status: 500 },
+      );
+    }
+
+    return Response.json(product, { status: 201 });
   } catch (err) {
     console.log(err);
     return Response.json(
@@ -62,8 +74,13 @@ export async function POST(req: Request) {
   }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> },
+) {
   try {
+    const { slug } = await params;
+
     const session = await getSession();
 
     if (!session) {
@@ -72,10 +89,13 @@ export async function PUT(req: Request) {
 
     const body = await req.json();
 
-    const store = await getStoreBySlug(body.slugStore);
+    const store = await getStoreBySlug(slug);
 
-    if(store.user_id !== session.user_id){
-      return Response.json({ error: "Não autenticado" }, { status: 401 });
+    if (store.user_id !== session.user_id) {
+      return Response.json(
+        { error: "Sem permissão para acessar esta loja" },
+        { status: 403 },
+      );
     }
 
     const updated = await updateProduct(body, session.user_id);

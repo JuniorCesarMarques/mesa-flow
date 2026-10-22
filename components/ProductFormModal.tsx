@@ -23,6 +23,8 @@ export default function ProductFormModal({
   onSubmit,
 }: Props) {
 
+  if(typeof window === "undefined") return;
+
   const { register, reset, setValue, watch, handleSubmit } =
     useForm<ProductForm>();
 

@@ -19,18 +19,21 @@ export const getAllProducts = async (slug: string) => {
   return res.rows;
 };
 
-export async function insertProduct(product: Product) {
+export async function insertProduct(product: Product, storeId: string) {
+
   const { nome, descricao, preco, imagem, disponivel } = product;
 
   const res = await pool.query(
     `
         INSERT INTO
-            produtos (nome, descricao, preco, imagem, disponivel)
-        VALUES(?, ?, ?, ?, ?)`,
-    [nome, descricao, preco, imagem, disponivel],
+            produtos (loja_id, nome, descricao, preco, imagem, disponivel)
+        VALUES($1, $2, $3, $4, $5, $6)
+        RETURNING *
+        `,
+    [storeId, nome, descricao, preco, imagem, disponivel],
   );
 
-  return res.rowCount;
+  return res.rows[0];
 }
 
 export const deleteProducts = (ids: number[]) => {

@@ -19,10 +19,10 @@ export type FormMode = "creating" | "editing";
 
 type StorePage = {
   canManageStore: boolean;
-  slugStore: string;
+  storeSlug: string;
 };
 
-export default function StorePage({ canManageStore, slugStore }: StorePage) {
+export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const [modalState, setModalState] = useState(false);
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,63 +36,76 @@ export default function StorePage({ canManageStore, slugStore }: StorePage) {
   const [productsLoading, setProductsLoading] = useState(false);
 
   const onSubmit = async (data: ProductForm) => {
-    if (selectedProduct) {
-      try {
-        const imgFromData =
-          data.imagem instanceof FileList ? data.imagem?.[0] : data.imagem;
+    try {
+      const imgFromData =
+        data.imagem instanceof FileList ? data.imagem?.[0] : data.imagem;
 
-        const imagem =
-          imgFromData instanceof File
-            ? await uploadImage(
-                imgFromData,
-                "store-platform-assets",
-                `${slugStore}/products`,
-              )
-            : imgFromData;
+      const imagem =
+        imgFromData instanceof File
+          ? await uploadImage(
+              imgFromData,
+              "store-platform-assets",
+              `${storeSlug}/products`,
+            )
+          : imgFromData;
 
-        const isNewImage = !(typeof imagem === "string" || imagem === null);
+      const newImage = !(typeof imagem === "string" || imagem === null);
 
-        const updatedProduct = {
-          slugStore,
-          ...data,
-          id: selectedProduct.id,
-          imagem: isNewImage ? imagem.publicUrl : imagem,
-        };
+      const method = selectedProduct ? "PUT" : "POST";
 
-        const res = await fetch("/api/produtos", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedProduct),
-        });
+      const product = {
+        ...data,
+        imagem: newImage ? imagem.publicUrl : imagem,
+      };
 
-        const result = await res.json();
+      const res = await fetch(`/api/produtos/${storeSlug}`, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          selectedProduct ? { ...product, id: selectedProduct.id } : product,
+        ),
+      });
 
-        if (!res.ok) {
-          if (isNewImage) {
-            await deleteImage(imagem.publicUrl);
-          }
+      const result = await res.json();
 
-          throw new Error(result.error);
+      if (!res.ok) {
+        if (newImage) {
+          await deleteImage(imagem.publicUrl);
         }
 
-        if (isNewImage && selectedProduct.imagem) {
+        throw new Error(result.error);
+      }
+
+      setProducts((prev) => [...prev, result]);
+
+      const onSuccess = () => {
+        setSelectedProduct(null);
+        setModalState(false);
+        toast.success(result.message);
+      };
+
+      if (selectedProduct) {
+        if (newImage && selectedProduct.imagem) {
           await deleteImage(selectedProduct.imagem);
         }
+
+        const updatedProduct = {
+          id: selectedProduct.id,
+          ...data,
+          imagem: newImage ? imagem.publicUrl : imagem,
+        };
 
         setProducts((prev) =>
           prev.map((p) => (p.id === selectedProduct.id ? updatedProduct : p)),
         );
 
-        setSelectedProduct(null);
-        setModalState(false);
-        toast.success(result.message);
-      } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Erro inesperado");
+        onSuccess();
       }
-    } else {
-      const res = await fetch(``);
+      onSuccess();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro inesperado");
     }
   };
 
@@ -100,7 +113,7 @@ export default function StorePage({ canManageStore, slugStore }: StorePage) {
     (async () => {
       try {
         setProductsLoading(true);
-        const res = await fetch(`/api/produtos/${slugStore}`);
+        const res = await fetch(`/api/produtos/${storeSlug}`);
 
         setProductsLoading(false);
 
@@ -120,7 +133,7 @@ export default function StorePage({ canManageStore, slugStore }: StorePage) {
     (async () => {
       setBannerLoading(true);
       try {
-        const res = await fetch(`/api/appearence/${slugStore}`);
+        const res = await fetch(`/api/appearence/${storeSlug}`);
 
         setBannerLoading(false);
 
@@ -182,7 +195,9 @@ export default function StorePage({ canManageStore, slugStore }: StorePage) {
                 product={product}
               />
             ))
-          ) : <EmptyProducts />}
+          ) : (
+            <EmptyProducts />
+          )}
         </div>
       </section>
 
