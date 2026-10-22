@@ -10,6 +10,7 @@ export async function getAllStores(userId: string){
 export async function getStoreBySlug(slug: string){
     const res = await pool.query(`
         SELECT 
+            A.id,
             A.user_id,
             A.name,
             B.logo_path,

@@ -35,6 +35,8 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const [bannerLoading, setBannerLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
 
+  console.log(products);
+
   const onSubmit = async (data: ProductForm) => {
     try {
       const imgFromData =
@@ -78,8 +80,6 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         throw new Error(result.error);
       }
 
-      setProducts((prev) => [...prev, result]);
-
       const onSuccess = () => {
         setSelectedProduct(null);
         setModalState(false);
@@ -102,8 +102,10 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         );
 
         onSuccess();
+      } else {
+        setProducts((prev) => [...prev, result.product]);
+        onSuccess();
       }
-      onSuccess();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro inesperado");
     }

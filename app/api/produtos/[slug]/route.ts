@@ -40,8 +40,6 @@ export async function POST(
 
     const store = await getStoreBySlug(slug);
 
-    console.log(slug);
-
     if (!session) {
       return Response.json({ error: "Não autenticado" }, { status: 401 });
     }
@@ -64,7 +62,10 @@ export async function POST(
       );
     }
 
-    return Response.json(product, { status: 201 });
+    return Response.json(
+      { message: "Produto cadastrado com sucesso", product },
+      { status: 201 },
+    );
   } catch (err) {
     console.log(err);
     return Response.json(
@@ -98,7 +99,7 @@ export async function PUT(
       );
     }
 
-    const updated = await updateProduct(body, session.user_id);
+    const updated = await updateProduct(body);
 
     if (updated === 0) {
       return Response.json(

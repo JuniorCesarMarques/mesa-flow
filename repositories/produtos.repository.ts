@@ -21,6 +21,8 @@ export const getAllProducts = async (slug: string) => {
 
 export async function insertProduct(product: Product, storeId: string) {
 
+  console.log("Loja ID:", storeId);
+
   const { nome, descricao, preco, imagem, disponivel } = product;
 
   const res = await pool.query(
@@ -44,7 +46,6 @@ export const deleteProducts = (ids: number[]) => {
 
 export const updateProduct = async (
   product: Product,
-  user_id: string,
 ) => {
   const { id, nome, descricao, preco, imagem, disponivel } = product;
 
