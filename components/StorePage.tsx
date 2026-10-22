@@ -111,6 +111,32 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
     }
   };
 
+  console.log("Selected product", selectedProduct);
+
+  const handleDeleteProduct = async (productId: string) => {
+    if (selectedProduct) {
+      const res = await fetch(`/api/produtos/${storeSlug}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: productId }),
+      });
+
+      const result = await res.json();
+
+      console.log(result);
+
+      if (!res.ok) {
+        toast.error(result.message);
+        return
+      }
+
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      toast.success(result.message);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -194,6 +220,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
               <PratoCard
                 key={product.id}
                 handleEditClick={openFormModal}
+                onDelete={handleDeleteProduct}
                 product={product}
               />
             ))

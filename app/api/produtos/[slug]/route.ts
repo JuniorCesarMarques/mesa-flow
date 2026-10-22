@@ -1,6 +1,6 @@
 import { getStoreBySlug } from "@/repositories/lojas.repository";
 import {
-  deleteProducts,
+  deleteProduct,
   getAllProducts,
   insertProduct,
   updateProduct,
@@ -126,11 +126,16 @@ export async function DELETE(req: Request) {
       return Response.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    const { ids } = await req.json();
+    const { id } = await req.json();
 
-    const { rowCount } = await deleteProducts(ids);
+    console.log("Deleting product with ID:", id);
 
-    return Response.json({ deleted: rowCount });
+    await deleteProduct(id);
+
+    return Response.json(
+      { message: "Produto deletado com sucesso" },
+      { status: 200 },
+    );
   } catch (err) {
     console.log("Erro interno no servidor:", err);
 

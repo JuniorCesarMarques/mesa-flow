@@ -9,7 +9,7 @@ type Props = {
   open: boolean;
   onClose: () => void;
   product: Product | null;
-  onSubmit: (product: ProductForm) => void;
+  onSubmit: (product: ProductForm) => Promise<void>;
 };
 
 export type ProductForm = Omit<Product, "imagem" | "id"> & {
@@ -24,6 +24,8 @@ export default function ProductFormModal({
 }: Props) {
 
   if(typeof window === "undefined") return;
+
+
 
   const { register, reset, setValue, watch, handleSubmit } =
     useForm<ProductForm>();
@@ -47,6 +49,7 @@ export default function ProductFormModal({
   useEffect(() => {
     reset({
       nome: product?.nome ?? "",
+      categoria: product?.categoria ?? "",
       descricao: product?.descricao ?? "",
       disponivel: product?.disponivel ?? false,
       imagem: product?.imagem ?? null,

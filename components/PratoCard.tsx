@@ -10,13 +10,17 @@ import ProductMenuActions from "./ProductMenuActions";
 type PratoCardProps = {
   product: Product;
   handleEditClick: (product: Product) => void;
+  onDelete: (id: string) => Promise<void>;
 };
 
-export default function PratoCard({ product, handleEditClick }: PratoCardProps) {
+export default function PratoCard({
+  product,
+  handleEditClick,
+  onDelete,
+}: PratoCardProps) {
   const menuRef = useRef<HTMLUListElement>(null);
 
   const [open, setOpen] = useState(false);
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -45,10 +49,11 @@ export default function PratoCard({ product, handleEditClick }: PratoCardProps) 
       </div>
 
       {open && (
-        <ProductMenuActions 
-          onDelete={() => {}}
-          menuRef={menuRef} 
-          onEdit={() => handleEditClick(product)} />
+        <ProductMenuActions
+          onDelete={() => onDelete(product.id)}
+          menuRef={menuRef}
+          onEdit={() => handleEditClick(product)}
+        />
       )}
 
       <div className="relative h-64 w-full">
@@ -73,7 +78,7 @@ export default function PratoCard({ product, handleEditClick }: PratoCardProps) 
 
           <button className="rounded-lg bg-orange-500 px-4 py-2 text-white transition hover:bg-orange-600">
             <a
-              href="https://wa.me/5519996626766?text=Olá,%20gostaria%20de%20fazer%20um%20pedido."
+              href="https://wa.me/5515996124612?text=Olá,%20gostaria%20de%20fazer%20um%20pedido."
               target="_blank"
               rel="noopener noreferrer"
             >

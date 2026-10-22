@@ -38,10 +38,9 @@ export async function insertProduct(product: Product, storeId: string) {
   return res.rows[0];
 }
 
-export const deleteProducts = (ids: number[]) => {
-  const placeholders = ids.map((id) => "?").join(",");
+export const deleteProduct = (id: number) => {
 
-  return pool.query(`DELETE FROM products WHERE id IN (${placeholders})`, ids);
+  return pool.query(`DELETE FROM produtos WHERE id = $1`, [id]);
 };
 
 export const updateProduct = async (
