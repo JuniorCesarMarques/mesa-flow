@@ -20,7 +20,7 @@ export default async function StorePageServer({
   }
 
 
-  const canManageStore = !!session;
+  const canManageStore = session.user_id === store.user_id;
 
   return <StorePage canManageStore={canManageStore} storeSlug={slug} />;
 }

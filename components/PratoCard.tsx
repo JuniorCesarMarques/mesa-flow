@@ -11,14 +11,12 @@ type PratoCardProps = {
   product: Product;
   handleEditClick: (product: Product) => void;
   onDelete: (id: string) => Promise<void>;
-  onMenuToggle: (productId: string) => void;
 };
 
 export default function PratoCard({
   product,
   handleEditClick,
   onDelete,
-  onMenuToggle,
 }: PratoCardProps) {
   const menuRef = useRef<HTMLUListElement>(null);
 
@@ -26,7 +24,9 @@ export default function PratoCard({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+
         setOpenDropdown(false);
       }
     }
@@ -45,7 +45,6 @@ export default function PratoCard({
     >
       <div
         onClick={() => {
-          onMenuToggle(product.id)
           setOpenDropdown((prev) => !prev)
         }}
         className="absolute top-2 right-2 bg-white p-2 rounded-full z-10"

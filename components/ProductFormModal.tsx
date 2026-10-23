@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import CloseButton from "./CLoseButton";
 
 type Props = {
-  open: boolean;
   onClose: () => void;
   product: Product | null;
   onSubmit: (product: ProductForm) => Promise<void>;
@@ -17,7 +16,6 @@ export type ProductForm = Omit<Product, "imagem" | "id"> & {
 };
 
 export default function ProductFormModal({
-  open,
   onClose,
   product,
   onSubmit,
@@ -57,7 +55,7 @@ export default function ProductFormModal({
     });
   }, [product, reset]);
 
-  if (!open) return null;
+  console.log(watch("nome"))
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

@@ -35,8 +35,6 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const [bannerLoading, setBannerLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
 
-  console.log(products);
-
   const onSubmit = async (data: ProductForm) => {
     try {
       const imgFromData =
@@ -111,30 +109,27 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
     }
   };
 
-  console.log("Selected product", selectedProduct);
-
   const handleDeleteProduct = async (productId: string) => {
-    if (selectedProduct) {
-      const res = await fetch(`/api/produtos/${storeSlug}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: productId }),
-      });
+    const res = await fetch(`/api/produtos/${storeSlug}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: productId }),
+    });
 
-      const result = await res.json();
+    const result = await res.json();
 
-      console.log(result);
+    console.log(result);
 
-      if (!res.ok) {
-        toast.error(result.message);
-        return
-      }
-
-      setProducts((prev) => prev.filter((p) => p.id !== productId));
-      toast.success(result.message);
+    if (!res.ok) {
+      toast.error(result.message);
+      return;
     }
+
+    setProducts((prev) => prev.filter((p) => p.id !== productId));
+    setSelectedProduct(null);
+    toast.success(result.message);
   };
 
   useEffect(() => {
@@ -177,7 +172,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
     })();
   }, []);
 
-  const openFormModal = (product?: Product) => {
+  const openFormModal = (product: Product | undefined) => {
     setSelectedProduct(product ?? null);
     setModalState(true);
   };
@@ -185,6 +180,8 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const closeModal = () => {
     setModalState(false);
   };
+
+  console.log(selectedProduct);
 
   return (
     <main>
@@ -196,12 +193,13 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
 
       {canManageStore && <OpenModalButton onOpen={openFormModal} />}
 
-      <ProductFormModal
-        product={selectedProduct}
-        open={modalState}
-        onClose={closeModal}
-        onSubmit={onSubmit}
-      />
+      {modalState && (
+        <ProductFormModal
+          product={selectedProduct}
+          onClose={closeModal}
+          onSubmit={onSubmit}
+        />
+      )}
 
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-14 text-center">
@@ -218,7 +216,6 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           ) : products.length ? (
             products.map((product) => (
               <PratoCard
-                onMenuToggle={() => setSelectedProduct()}
                 key={product.id}
                 handleEditClick={openFormModal}
                 onDelete={handleDeleteProduct}
