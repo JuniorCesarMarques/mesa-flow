@@ -11,12 +11,14 @@ type PratoCardProps = {
   product: Product;
   handleEditClick: (product: Product) => void;
   onDelete: (id: string) => Promise<void>;
+  canManageStore: boolean;
 };
 
 export default function PratoCard({
   product,
   handleEditClick,
   onDelete,
+  canManageStore,
 }: PratoCardProps) {
   const menuRef = useRef<HTMLUListElement>(null);
 
@@ -24,9 +26,7 @@ export default function PratoCard({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-
         setOpenDropdown(false);
       }
     }
@@ -43,14 +43,16 @@ export default function PratoCard({
       key={product.id}
       className="relative w-80 flex flex-col items-between justify-between overflow-hidden rounded-3xl bg-white shadow-lg transition hover:-translate-y-2 hover:shadow-2xl"
     >
-      <div
-        onClick={() => {
-          setOpenDropdown((prev) => !prev)
-        }}
-        className="absolute top-2 right-2 bg-white p-2 rounded-full z-10"
-      >
-        <FaEllipsisV />
-      </div>
+      {canManageStore && (
+        <div
+          onClick={() => {
+            setOpenDropdown((prev) => !prev);
+          }}
+          className="absolute top-2 right-2 bg-white p-2 rounded-full z-10"
+        >
+          <FaEllipsisV />
+        </div>
+      )}
 
       {openDropdown && (
         <ProductMenuActions

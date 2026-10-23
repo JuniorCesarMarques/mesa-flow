@@ -216,6 +216,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           ) : products.length ? (
             products.map((product) => (
               <PratoCard
+                canManageStore={canManageStore}
                 key={product.id}
                 handleEditClick={openFormModal}
                 onDelete={handleDeleteProduct}
