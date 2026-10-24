@@ -25,7 +25,7 @@ export default function Sobre(){
               alt="Ambiente do restaurante"
               fill
               unoptimized
-              className="object-cover object-left"
+              className="object-cover"
             />
           </div>
         </div>
