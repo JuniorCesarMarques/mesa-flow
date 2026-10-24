@@ -55,13 +55,13 @@ function StorePreview({ slug }: { slug: string }) {
 
 export default function StoresList({ stores }: Props) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 pt-15">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4 pt-15 px-5">
       {stores.map((store) => (
         <article
           key={store.id}
           className="min-w-0 overflow-hidden rounded-xl border bg-white shadow-sm"
         >
-          <StorePreview slug={store.slug} />
+          {/* <StorePreview slug={store.slug} /> */}
 
           <div className="flex items-center justify-between gap-3 p-4">
             <div className="min-w-0">

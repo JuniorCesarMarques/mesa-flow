@@ -181,7 +181,6 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
     setModalState(false);
   };
 
-  console.log(selectedProduct);
 
   return (
     <main>
