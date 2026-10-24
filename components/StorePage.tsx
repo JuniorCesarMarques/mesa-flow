@@ -14,6 +14,7 @@ import { StoreAppearence } from "@/types/appearence";
 import Banner from "@/components/Banner";
 import { BannerSkeleton } from "./BannerSkeleton";
 import { EmptyProducts } from "./EmptyProducts";
+import WhatsAppButton from "./WhatsAppButton";
 
 export type FormMode = "creating" | "editing";
 
@@ -227,7 +228,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           )}
         </div>
       </section>
-
+      <WhatsAppButton phone="15996124612" message="Olá, gostaria de fazer um pedido." />
       <Sobre />
 
       <CTAComponent />
