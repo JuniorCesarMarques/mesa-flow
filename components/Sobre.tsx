@@ -21,11 +21,11 @@ export default function Sobre(){
 
           <div className="relative h-125 overflow-hidden rounded-3xl">
             <Image
-              src="https://zvwxwcxquavhgoswsmim.supabase.co/storage/v1/object/public/store-platform-assets/f43c811e-4b41-4592-9aae-03f4f47fad8c/appearance/about-us-image.jpeg"
+              src="https://zvwxwcxquavhgoswsmim.supabase.co/storage/v1/object/public/store-platform-assets/to-fit/appearance/banner2.png"
               alt="Ambiente do restaurante"
               fill
               unoptimized
-              className="object-cover"
+              className="object-cover object-left"
             />
           </div>
         </div>
