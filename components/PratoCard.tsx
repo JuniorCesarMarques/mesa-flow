@@ -63,7 +63,7 @@ export default function PratoCard({
       )}
 
 
-      <div className="p-6 w-full flex flex-col justify-between">
+      <div className="p-6 min-w-0 flex-1 flex flex-col justify-between">
         <div>
           <h3 className="text-sm font-bold sm:text-md truncate">{product.nome}</h3>
           <p className="mt-3 text-gray-600 text-sm line-clamp-2">{product.descricao}</p>
@@ -75,7 +75,7 @@ export default function PratoCard({
           </span>
         </div>
       </div>
-      <div className="relative h-30 w-30">
+      <div className="relative h-30 w-30 shrink-0">
         <Image
           src={product.imagem ?? "/imagens/product-fallback.png"}
           alt={product.nome}
