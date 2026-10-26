@@ -33,7 +33,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const [storeAppearence, setStoreAppearence] =
     useState<StoreAppearence | null>(null);
 
-  const [bannerLoading, setBannerLoading] = useState(false);
+  const [appearenceLoading, setAppearenceLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(false);
 
   const onSubmit = async (data: ProductForm) => {
@@ -155,19 +155,18 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
 
   useEffect(() => {
     (async () => {
-      setBannerLoading(true);
       try {
         const res = await fetch(`/api/appearence/${storeSlug}`);
-
-        setBannerLoading(false);
 
         if (!res.ok) return;
 
         const appearence = await res.json();
 
+        setAppearenceLoading(false);
+
         setStoreAppearence(appearence);
       } catch (err) {
-        setBannerLoading(false);
+        setAppearenceLoading(false);
         console.log(err);
       }
     })();
@@ -185,7 +184,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
 
   return (
     <main>
-      {bannerLoading ? (
+      {appearenceLoading ? (
         <BannerSkeleton />
       ) : storeAppearence && storeAppearence.banner_path ? (
         <Banner logoPath={storeAppearence.banner_path} />
@@ -210,7 +209,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-10">
+        <div className="flex flex-wrap gap-5 justify-center">
           {productsLoading ? (
             <Skeleton items={6} />
           ) : products.length ? (

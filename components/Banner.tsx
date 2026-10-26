@@ -7,7 +7,7 @@ type HomeHeroProps = {
 
 export default function Banner({ logoPath }: HomeHeroProps) {
   return (
-    <section className="relative h-30 max-h-105 overflow-hidden sm:h-[35vh] sm:min-h-80 md:h-[40vh]">
+    <section className="relative h-30 overflow-hidden sm:h-50 md:h-80">
       <Image
         src={logoPath}
         alt="Banner da loja"

@@ -41,7 +41,7 @@ export default function PratoCard({
   return (
     <article
       key={product.id}
-      className="relative w-80 flex items-between justify-between overflow-hidden rounded-3xl bg-white shadow-lg transition hover:-translate-y-2 hover:shadow-2xl"
+      className="relative w-full max-w-150 h-40 flex items-between justify-between overflow-hidden rounded-3xl bg-white shadow-lg transition hover:-translate-y-2 hover:shadow-2xl"
     >
       {canManageStore && (
         <div
@@ -63,11 +63,11 @@ export default function PratoCard({
       )}
 
 
-
-      <div className="p-6">
-        <h3 className="text-sm font-bold sm:text-md">{product.nome}</h3>
-
-        <p className="mt-3 text-gray-600 text-sm">{product.descricao}</p>
+      <div className="p-6 w-full flex flex-col justify-between">
+        <div>
+          <h3 className="text-sm font-bold sm:text-md truncate">{product.nome}</h3>
+          <p className="mt-3 text-gray-600 text-sm line-clamp-2">{product.descricao}</p>
+        </div>
 
         <div className="mt-6 flex items-center justify-between">
           <span className="text-sm font-bold text-orange-500">
@@ -75,7 +75,7 @@ export default function PratoCard({
           </span>
         </div>
       </div>
-      <div className="relative h-30 w-64">
+      <div className="relative h-30 w-30">
         <Image
           src={product.imagem ?? "/imagens/product-fallback.png"}
           alt={product.nome}
