@@ -8,6 +8,7 @@ import { FaEllipsisV } from "react-icons/fa";
 import ProductMenuActions from "./ProductMenuActions";
 
 type PratoCardProps = {
+  onClick: () => void;
   product: Product;
   handleEditClick: (product: Product) => void;
   onDelete: (id: string) => Promise<void>;
@@ -16,6 +17,7 @@ type PratoCardProps = {
 
 export default function PratoCard({
   product,
+  onClick,
   handleEditClick,
   onDelete,
   canManageStore,
@@ -50,7 +52,7 @@ export default function PratoCard({
           }}
           className="absolute top-2 right-2 bg-white p-2 rounded-full z-5"
         >
-          <FaEllipsisV />
+          <FaEllipsisV color="#6B7280" />
         </div>
       )}
 
@@ -63,9 +65,9 @@ export default function PratoCard({
       )}
 
 
-      <div className="p-6 min-w-0 flex-1 flex flex-col justify-between">
+      <div onClick={onClick} className="p-6 min-w-0 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-sm font-bold sm:text-md truncate">{product.nome}</h3>
+          <h3 className=" text-gray-600 text-base font-semibold truncate">{product.nome}</h3>
           <p className="mt-3 text-gray-600 text-sm line-clamp-2">{product.descricao}</p>
         </div>
 

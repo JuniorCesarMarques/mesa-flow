@@ -15,6 +15,8 @@ import Banner from "@/components/Banner";
 import { BannerSkeleton } from "./BannerSkeleton";
 import { EmptyProducts } from "./EmptyProducts";
 import WhatsAppButton from "./WhatsAppButton";
+import Modal from "@/components/system/Modal";
+import ProductDetails from "./ProductDetails";
 
 export type FormMode = "creating" | "editing";
 
@@ -25,6 +27,8 @@ type StorePage = {
 
 export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const [modalState, setModalState] = useState(false);
+
+  const [productModal, setProductModal] = useState(false);
 
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -182,8 +186,25 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   };
 
 
+  const closeProductModal = () => {
+    setProductModal(false);
+  };
+
+  const onCardClick = (product: Product) => {
+    setProductModal(true);
+    setSelectedProduct(product);
+  }
+
   return (
     <main>
+      <Modal
+        title="Produto"
+        isModalOpen={productModal}
+        close={closeProductModal}
+      >
+        <ProductDetails product={selectedProduct!} onAddToCart={() => {}} />
+      </Modal>
+
       {appearenceLoading ? (
         <BannerSkeleton />
       ) : storeAppearence && storeAppearence.banner_path ? (
@@ -215,6 +236,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           ) : products.length ? (
             products.map((product) => (
               <PratoCard
+                onClick={() => onCardClick(product)}
                 canManageStore={canManageStore}
                 key={product.id}
                 handleEditClick={openFormModal}
@@ -227,7 +249,10 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           )}
         </div>
       </section>
-      <WhatsAppButton phone="15996124612" message="Olá, gostaria de fazer um pedido." />
+      <WhatsAppButton
+        phone="15996124612"
+        message="Olá, gostaria de fazer um pedido."
+      />
       <Sobre />
 
       <CTAComponent />

@@ -62,3 +62,9 @@ export const updateProduct = async (
 
   return res.rowCount;
 };
+
+export const getProductById = async (id: string) => {
+  const res = await pool.query(`SELECT * FROM produtos WHERE id = $1`, [id]);
+
+  return res.rows[0];
+} 

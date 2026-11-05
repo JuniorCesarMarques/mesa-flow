@@ -16,7 +16,6 @@ export async function GET(
 
     const produtos = await getAllProducts(slug);
 
-    console.log(produtos);
 
     return Response.json(produtos, { status: 200 });
   } catch (err) {
