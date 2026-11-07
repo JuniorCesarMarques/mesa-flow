@@ -24,26 +24,25 @@ export type CartAction =
       type: "CLEAR_CART";
     };
 
-export function cartReducer(
-  state: CartState,
-  action: CartAction
-): CartState {
+export const initialState: CartState = { items: [] };
+
+export function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
       const existingItem = state.items.find(
-        item => item.id === action.payload.id
+        (item) => item.id === action.payload.id,
       );
 
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map(item =>
+          items: state.items.map((item) =>
             item.id === action.payload.id
               ? {
                   ...item,
                   quantity: item.quantity + 1,
                 }
-              : item
+              : item,
           ),
         };
       }
@@ -63,9 +62,7 @@ export function cartReducer(
     case "REMOVE_ITEM":
       return {
         ...state,
-        items: state.items.filter(
-          item => item.id !== action.payload
-        ),
+        items: state.items.filter((item) => item.id !== action.payload),
       };
 
     case "CLEAR_CART":
