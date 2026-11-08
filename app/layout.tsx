@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Header from "@/components/platform/Header";
 import { ConfigProvider } from "antd";
+import CartProvider from "@/contexts/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,9 @@ export default function RootLayout({
           }}
         >
           <Header />
-          {children}
+          <CartProvider>
+            {children}
+          </CartProvider>
           <Toaster />
         </ConfigProvider>
       </body>

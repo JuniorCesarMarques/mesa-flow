@@ -14,9 +14,12 @@ import { StoreAppearence } from "@/types/appearence";
 import Banner from "@/components/Banner";
 import { BannerSkeleton } from "./BannerSkeleton";
 import { EmptyProducts } from "./EmptyProducts";
-import WhatsAppButton from "./WhatsAppButton";
 import Modal from "@/components/system/Modal";
 import ProductDetails from "./ProductDetails";
+import { useCart } from "@/contexts/CartContext";
+import { useDrawer } from "@/hooks/useDrawer";
+import Drawer from "./system/Drawer";
+import CartButton from "./CartButton";
 
 export type FormMode = "creating" | "editing";
 
@@ -26,9 +29,13 @@ type StorePage = {
 };
 
 export default function StorePage({ canManageStore, storeSlug }: StorePage) {
+  const { dispatch, quantity } = useCart();
+
   const [modalState, setModalState] = useState(false);
 
   const [productModal, setProductModal] = useState(false);
+
+  const { isDrawerOpen, closeDrawer, openDrawer } = useDrawer();
 
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -185,7 +192,6 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
     setModalState(false);
   };
 
-
   const closeProductModal = () => {
     setProductModal(false);
   };
@@ -193,7 +199,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
   const onCardClick = (product: Product) => {
     setProductModal(true);
     setSelectedProduct(product);
-  }
+  };
 
   return (
     <main>
@@ -202,8 +208,18 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         isModalOpen={productModal}
         close={closeProductModal}
       >
-        <ProductDetails product={selectedProduct!} onAddToCart={() => {}} />
+        <ProductDetails
+          key={selectedProduct?.id}
+          product={selectedProduct!}
+          onAddToCart={(product, quantity) => {
+            dispatch({ type: "ADD_ITEM", payload: { ...product, quantity } });
+            closeProductModal();
+          }
+          }
+        />
       </Modal>
+
+      <Drawer onClose={closeDrawer} open={isDrawerOpen} />
 
       {appearenceLoading ? (
         <BannerSkeleton />
@@ -249,10 +265,11 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
           )}
         </div>
       </section>
-      <WhatsAppButton
+      <CartButton onClick={openDrawer} quantity={quantity} />
+      {/* <WhatsAppButton
         phone="15996124612"
         message="Olá, gostaria de fazer um pedido."
-      />
+      /> */}
       <Sobre />
 
       <CTAComponent />

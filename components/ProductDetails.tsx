@@ -7,6 +7,7 @@ import { Product } from "@/types/product";
 
 type ProductDetailsProps = {
   product: Product;
+  key: string | undefined;
   onAddToCart: (product: Product, quantity: number) => void;
 };
 
@@ -14,11 +15,14 @@ export default function ProductDetails({
   product,
   onAddToCart,
 }: ProductDetailsProps) {
+
   const [quantity, setQuantity] = useState(1);
 
   const price = Number(product.preco);
 
   const subtotal = price * quantity;
+
+  console.log(product.id);
 
   return (
     <div className="space-y-6">

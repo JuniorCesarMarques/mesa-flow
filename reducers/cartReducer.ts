@@ -1,9 +1,8 @@
 // cartReducer.ts
 
-export type CartItem = {
-  id: number;
-  name: string;
-  price: number;
+import { Product } from "@/types/product";
+
+export type CartItem = Product & {
   quantity: number;
 };
 
@@ -14,11 +13,11 @@ export type CartState = {
 export type CartAction =
   | {
       type: "ADD_ITEM";
-      payload: Omit<CartItem, "quantity">;
+      payload: CartItem;
     }
   | {
       type: "REMOVE_ITEM";
-      payload: number;
+      payload: string;
     }
   | {
       type: "CLEAR_CART";
@@ -40,7 +39,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
             item.id === action.payload.id
               ? {
                   ...item,
-                  quantity: item.quantity + 1,
+                  quantity: item.quantity + action.payload.quantity,
                 }
               : item,
           ),
@@ -53,7 +52,6 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
           ...state.items,
           {
             ...action.payload,
-            quantity: 1,
           },
         ],
       };
