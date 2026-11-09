@@ -270,7 +270,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         phone="15996124612"
         message="Olá, gostaria de fazer um pedido."
       /> */}
-      <Sobre />
+      {/* <Sobre /> */}
 
       <CTAComponent />
     </main>
