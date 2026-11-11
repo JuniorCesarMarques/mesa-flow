@@ -73,7 +73,7 @@ export default function PratoCard({
 
         <div className="mt-6 flex items-center justify-between">
           <span className="text-sm font-bold text-orange-500">
-            R$ {product.preco.replace(".", ",")}
+            R$ {product.preco.toString().replace(".", ",")}
           </span>
         </div>
       </div>
