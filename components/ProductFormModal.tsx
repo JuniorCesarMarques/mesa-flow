@@ -45,13 +45,14 @@ export default function ProductFormModal({
   }, [imagem, product]);
 
   useEffect(() => {
+    
     reset({
       nome: product?.nome ?? "",
       categoria: product?.categoria ?? "",
       descricao: product?.descricao ?? "",
       disponivel: product?.disponivel ?? false,
       imagem: product?.imagem ?? null,
-      preco: product?.preco ?? "",
+      preco: product?.preco ?? undefined,
     });
   }, [product, reset]);
 
