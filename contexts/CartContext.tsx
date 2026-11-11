@@ -6,16 +6,12 @@ import {
   CartState,
   initialState,
 } from "@/reducers/cartReducer";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useReducer,
-} from "react";
+import { createContext, ReactNode, useContext, useReducer } from "react";
 
 type CartContextType = {
   state: CartState;
   quantity: number;
+  totalPrice: number;
   dispatch: React.ActionDispatch<[action: CartAction]>;
 };
 
@@ -29,8 +25,13 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     0,
   );
 
+  const totalPrice = state.items.reduce(
+    (accumulator, item) => accumulator + item.preco * item.quantity,
+    0,
+  );
+
   return (
-    <CartContext.Provider value={{ state, quantity, dispatch }}>
+    <CartContext.Provider value={{ state, quantity, dispatch, totalPrice }}>
       {children}
     </CartContext.Provider>
   );

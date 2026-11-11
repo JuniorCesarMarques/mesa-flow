@@ -20,6 +20,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useDrawer } from "@/hooks/useDrawer";
 import Drawer from "./system/Drawer";
 import CartButton from "./CartButton";
+import Cart from "./Cart";
 
 export type FormMode = "creating" | "editing";
 
@@ -219,7 +220,9 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         />
       </Modal>
 
-      <Drawer onClose={closeDrawer} open={isDrawerOpen} />
+      <Drawer onClose={closeDrawer} open={isDrawerOpen} >
+        <Cart />
+      </Drawer>
 
       {appearenceLoading ? (
         <BannerSkeleton />

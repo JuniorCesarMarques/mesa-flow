@@ -1,6 +1,7 @@
 // cartReducer.ts
 
 import { Product } from "@/types/product";
+import useFormItemStatus from "antd/es/form/hooks/useFormItemStatus";
 
 export type CartItem = Product & {
   quantity: number;
@@ -14,6 +15,10 @@ export type CartAction =
   | {
       type: "ADD_ITEM";
       payload: CartItem;
+    }
+  | {
+      type: "DECREASE_QUANTITY";
+      payload: string;
     }
   | {
       type: "REMOVE_ITEM";
@@ -56,6 +61,16 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
         ],
       };
     }
+
+    case "DECREASE_QUANTITY":
+      return {
+        ...state,
+        items: state.items.map((item) =>
+          item.id === action.payload
+            ? { ...item, quantity: item.quantity - 1 }
+            : item,
+        ),
+      };
 
     case "REMOVE_ITEM":
       return {

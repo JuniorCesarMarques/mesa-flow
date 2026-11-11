@@ -1,11 +1,13 @@
 import { Drawer } from 'antd';
+import { ReactNode } from 'react';
 
 type Props = {
+    children: ReactNode;
     open: boolean;
     onClose: () => void;
 }
 
-const App = ({open, onClose}: Props) => {
+const App = ({ open, onClose, children }: Props) => {
 
   return (
     <>
@@ -15,9 +17,7 @@ const App = ({open, onClose}: Props) => {
         onClose={onClose}
         open={open}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        {children}
       </Drawer>
     </>
   );
