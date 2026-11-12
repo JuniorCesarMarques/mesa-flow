@@ -18,6 +18,7 @@ const App = ({
   return (
     <>
       <Modal
+        destroyOnHidden
         centered
         title={title}
         closable={{ "aria-label": "Custom Close Button" }}

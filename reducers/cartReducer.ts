@@ -1,7 +1,6 @@
 // cartReducer.ts
 
 import { Product } from "@/types/product";
-import useFormItemStatus from "antd/es/form/hooks/useFormItemStatus";
 
 export type CartItem = Product & {
   quantity: number;
@@ -38,6 +37,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       );
 
       if (existingItem) {
+        console.log("Add item")
         return {
           ...state,
           items: state.items.map((item) =>
@@ -63,7 +63,10 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
     }
 
     case "DECREASE_QUANTITY":
-      return {
+      const cartItem = state.items.find(i => i.id === action.payload);
+
+      if(cartItem && cartItem.quantity > 1){
+         return {
         ...state,
         items: state.items.map((item) =>
           item.id === action.payload
@@ -71,6 +74,8 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
             : item,
         ),
       };
+      }
+     return state;
 
     case "REMOVE_ITEM":
       return {

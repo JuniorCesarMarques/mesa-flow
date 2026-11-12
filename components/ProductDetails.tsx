@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "antd";
 import Image from "next/image";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
@@ -9,7 +9,6 @@ import { Product } from "@/types/product";
 
 type ProductDetailsProps = {
   product: Product;
-  key: string | undefined;
   onAddToCart: (product: Product, quantity: number) => void;
 };
 
@@ -21,6 +20,7 @@ export default function ProductDetails({
 
   const price = Number(product.preco);
   const subtotal = price * quantity;
+
 
   const formatPrice = (value: number) =>
     value.toLocaleString("pt-BR", {

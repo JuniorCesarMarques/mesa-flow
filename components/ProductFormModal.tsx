@@ -56,7 +56,7 @@ export default function ProductFormModal({
     });
   }, [product, reset]);
 
-  console.log(watch("nome"))
+  console.log(watch("nome"));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

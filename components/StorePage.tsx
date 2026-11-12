@@ -209,8 +209,7 @@ export default function StorePage({ canManageStore, storeSlug }: StorePage) {
         isModalOpen={productModal}
         close={closeProductModal}
       >
-        <ProductDetails
-          key={selectedProduct?.id}
+       <ProductDetails
           product={selectedProduct!}
           onAddToCart={(product, quantity) => {
             dispatch({ type: "ADD_ITEM", payload: { ...product, quantity } });

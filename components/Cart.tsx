@@ -15,13 +15,15 @@ export default function Cart() {
       currency: "BRL",
     });
 
-
-
   if (items.length === 0) {
     return (
       <div className="flex min-h-[380px] flex-col items-center justify-center px-6 text-center">
         <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-orange-50">
-          <ShoppingBag size={34} className="text-orange-500" strokeWidth={1.6} />
+          <ShoppingBag
+            size={34}
+            className="text-orange-500"
+            strokeWidth={1.6}
+          />
         </div>
 
         <h3 className="text-lg font-bold text-gray-800">
@@ -34,6 +36,8 @@ export default function Cart() {
       </div>
     );
   }
+
+  console.log("Render");
 
   return (
     <div className="flex h-full flex-col">
@@ -68,7 +72,10 @@ export default function Cart() {
 
                   <button
                     type="button"
-                    onClick={() => dispatch({type: "REMOVE_ITEM", payload: item.id})}
+                    onClick={() => {
+                      console.log("Remove cart")
+                      dispatch({ type: "REMOVE_ITEM", payload: item.id });
+                    }}
                     aria-label={`Remover ${item.nome}`}
                     className="shrink-0 rounded-lg p-1.5 text-gray-400 transition hover:bg-red-50 hover:text-red-500"
                   >
@@ -81,9 +88,12 @@ export default function Cart() {
                   <div className="flex h-8 items-center gap-3 rounded-lg border border-gray-200 px-1">
                     <button
                       type="button"
-                      onClick={() =>
-                        dispatch({type: "DECREASE_QUANTITY", payload: item.id})
-                      }
+                      onClick={() => {
+                        dispatch({
+                          type: "DECREASE_QUANTITY",
+                          payload: item.id,
+                        });
+                      }}
                       aria-label="Diminuir quantidade"
                       className="flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition hover:bg-orange-50 hover:text-orange-600"
                     >
@@ -97,7 +107,10 @@ export default function Cart() {
                     <button
                       type="button"
                       onClick={() =>
-                        dispatch({type: "ADD_ITEM", payload: item})
+                        dispatch({
+                          type: "ADD_ITEM",
+                          payload: { ...item, quantity: 1 },
+                        })
                       }
                       aria-label="Aumentar quantidade"
                       className="flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition hover:bg-orange-50 hover:text-orange-600"
