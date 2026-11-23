@@ -21,8 +21,6 @@ export default function Header({ storeName, storeLogo, session }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { slug } = useParams();
 
-  console.log("Render")
-
   const menuOptions: MenuOptionsType[] = [
     { label: "Início", href: "/" },
     { label: "Sobre", href: "/" },

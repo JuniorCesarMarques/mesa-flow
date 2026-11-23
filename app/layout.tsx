@@ -43,9 +43,7 @@ export default function RootLayout({
           }}
         >
           <Header />
-          <CartProvider>
             {children}
-          </CartProvider>
           <Toaster />
         </ConfigProvider>
       </body>

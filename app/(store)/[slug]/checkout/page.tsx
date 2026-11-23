@@ -1,8 +1,12 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
 import { MapPin, UserRound, Truck } from "lucide-react";
+import { useEffect } from "react";
+import { calcularFrete } from "@/lib/calcularFrete";
+
+import { useParams } from "next/navigation";
+import { CartState } from "@/reducers/cartReducer";
 
 export type CheckoutFormData = {
   nome_cliente: string;
@@ -16,10 +20,6 @@ export type CheckoutFormData = {
   observacao: string;
 };
 
-type CheckoutFormProps = {
-  onSubmit: (data: CheckoutFormData) => void | Promise<void>;
-};
-
 const inputClass = `
   w-full rounded-xl border border-gray-200 bg-white px-4 py-3
   text-sm text-gray-800 placeholder:text-gray-400
@@ -29,10 +29,14 @@ const inputClass = `
 
 const labelClass = "mb-1.5 block text-sm font-medium text-gray-700";
 
-export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
+export default function CheckoutForm() {
+  const { slug } = useParams();
+
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     mode: "onBlur",
@@ -49,6 +53,61 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
     },
   });
 
+  const campoCep = watch("cep");
+  const campoNumero = watch("numero");
+
+  useEffect(() => {
+    (async () => {
+      if (campoCep.length === 8) {
+        const response = await fetch(`/api/cep/${campoCep}`);
+
+        if (!response.ok) {
+          return;
+        }
+
+        const { logradouro, bairro, localidade, estado } =
+          await response.json();
+
+        setValue("rua", logradouro);
+        setValue("bairro", bairro);
+        setValue("cidade", localidade);
+      }
+    })();
+  }, [campoCep]);
+
+  const onSubmit = async (data: CheckoutFormData) => {
+    const itensLocalStorage = localStorage.getItem("cart");
+
+    if (!itensLocalStorage) {
+      console.log("Pedido sem itens");
+      return;
+    }
+
+    const cart: CartState = JSON.parse(itensLocalStorage);
+
+    const cartFormated = {
+      ...cart,
+      items: cart.items.map((item) => ({
+        nome: item.nome,
+        descricao: item.descricao,
+        quantidade: Number(item.quantity),
+        preco: Number(item.preco)
+      })),
+    };
+
+    const pedido = { ...data, ...cartFormated };
+
+    console.log("PEDIDO", pedido)
+
+    const res = await fetch(`/api/lojas/${slug}/pedidos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(pedido),
+    });
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -62,9 +121,7 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
           </div>
 
           <div>
-            <h2 className="font-semibold text-gray-800">
-              Seus dados
-            </h2>
+            <h2 className="font-semibold text-gray-800">Seus dados</h2>
             <p className="text-sm text-gray-500">
               Como podemos entrar em contato?
             </p>
@@ -125,9 +182,7 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
           </div>
 
           <div>
-            <h2 className="font-semibold text-gray-800">
-              Endereço de entrega
-            </h2>
+            <h2 className="font-semibold text-gray-800">Endereço de entrega</h2>
             <p className="text-sm text-gray-500">
               Onde deseja receber seu pedido?
             </p>
@@ -149,9 +204,7 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
               className={inputClass}
             />
             {errors.cep && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.cep.message}
-              </p>
+              <p className="mt-1 text-xs text-red-500">{errors.cep.message}</p>
             )}
           </div>
 
@@ -166,9 +219,7 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
               className={inputClass}
             />
             {errors.rua && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.rua.message}
-              </p>
+              <p className="mt-1 text-xs text-red-500">{errors.rua.message}</p>
             )}
           </div>
 
@@ -241,9 +292,7 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
           <div>
             <label className={labelClass}>
               Observações
-              <span className="ml-1 font-normal text-gray-400">
-                (opcional)
-              </span>
+              <span className="ml-1 font-normal text-gray-400">(opcional)</span>
             </label>
             <textarea
               {...register("observacao")}
@@ -251,24 +300,6 @@ export default function CheckoutForm({ onSubmit }: CheckoutFormProps) {
               placeholder="Alguma orientação para a entrega?"
               className={`${inputClass} resize-none`}
             />
-          </div>
-        </div>
-      </section>
-
-      {/* Frete */}
-      <section className="rounded-2xl border border-orange-100 bg-orange-50/50 p-5 sm:p-6">
-        <div className="flex items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-orange-600">
-            <Truck size={20} />
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-gray-800">
-              Entrega
-            </h3>
-            <p className="text-sm text-gray-500">
-              O valor do frete será calculado após informar o endereço.
-            </p>
           </div>
         </div>
       </section>

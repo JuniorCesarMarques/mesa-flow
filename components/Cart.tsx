@@ -3,8 +3,13 @@
 import Image from "next/image";
 import { Minus, Plus, ShoppingBag, Trash2, ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function Cart() {
+
+  const { slug } = useParams();
+
   const { state, dispatch, totalPrice } = useCart();
 
   const { items } = state;
@@ -142,13 +147,15 @@ export default function Cart() {
           </span>
         </div>
 
-        <button
-          type="button"
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 active:scale-[0.99]"
-        >
-          <ShoppingCart size={19} />
-          Continuar pedido
-        </button>
+        <Link href={`/${slug}/checkout`}>
+          <button
+            type="button"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 active:scale-[0.99]"
+          >
+            <ShoppingCart size={19} />
+            Continuar pedido
+          </button>
+        </Link>
       </div>
     </div>
   );

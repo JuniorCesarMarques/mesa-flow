@@ -1,5 +1,6 @@
 export type Session = {
-    userId: string;
+	id: string;
+    user_id: string;
 	tokenHash: string;
 	expiresAt: Date;
 	createdAt: Date;

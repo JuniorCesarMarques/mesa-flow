@@ -13,13 +13,21 @@ export async function getStoreBySlug(slug: string){
             A.id,
             A.user_id,
             A.name,
-            B.logo_path,
-            B.banner_path
+            C.logo_path,
+            C.banner_path,
+            B.estado,
+            B.cidade,
+            b.numero,
+            B.logradouro,
+            B.bairro
         FROM lojas AS A
-            INNER JOIN store_appearence AS B
+            INNER JOIN enderecos AS B
         ON
-            A.id = B.store_id
-        WHERE slug = $1`, [slug]);
+            A.id = B.loja_id
+            INNER JOIN store_appearence AS C
+        ON
+            A.id = C.store_id
+        WHERE A.slug = $1`, [slug]);
 
     return res.rows[0] ?? null;
 }

@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import CartProvider from "@/contexts/CartContext";
 import { getStoreBySlug } from "@/repositories/lojas.repository";
 import { getSession } from "@/services/auth.service";
 import { notFound } from "next/navigation";
@@ -37,6 +38,7 @@ export default async function PlatformLayout({
 
   return (
     <>
+    <CartProvider>
       <Header
         storeName={storeInfo.name}
         storeLogo={storeInfo.logo_path}
@@ -44,6 +46,8 @@ export default async function PlatformLayout({
       />
       {children}
       <Toaster />
+    </CartProvider>
+      
     </>
   );
 }

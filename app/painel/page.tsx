@@ -7,12 +7,11 @@ export default async function Painel(){
 
     const session = await getSession();
 
-    const stores = await getAllStores(session.user_id);
-
-
     if(!session){
         redirect("/login");
     };
+
+    const stores = await getAllStores(session.user_id);
 
 
     return(

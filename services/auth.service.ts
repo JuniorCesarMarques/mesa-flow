@@ -3,11 +3,12 @@ import crypto from "crypto";
 
 // login
 import { findUserByEmail } from "@/repositories/user.repository";
-import { createSession } from "@/repositories/sessions.repository";
+import { createSession, removeSessionById } from "@/repositories/sessions.repository";
 
 // session
 import { cookies } from "next/headers";
 import { findSessionByTokenHash } from "@/repositories/sessions.repository";
+import { Session } from "@/types/session";
 
 
 export async function login(email: string, password: string) {
@@ -53,7 +54,7 @@ const expiresAt = new Date();
   };
 }
 
-export async function getSession() {
+export async function getSession(): Promise<Session | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
 
@@ -73,6 +74,7 @@ export async function getSession() {
   }
 
   if (session.expiresAt < new Date()) {
+    await removeSessionById(session.id);
     return null;
   }
 
