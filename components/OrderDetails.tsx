@@ -1,12 +1,12 @@
 "use client";
 
-import { Order } from "@/types/order";
+import { Order, OrderDisplay } from "@/types/order";
 
 export default function OrderDetails({
   order,
   onClose,
 }: {
-  order: Order;
+  order: OrderDisplay;
   onClose: () => void;
 }) {
   const currency = (value: number) =>
@@ -42,7 +42,7 @@ export default function OrderDetails({
 
           {order.items.map((item) => (
             <div
-              key={item.id}
+              key={item.item_id}
               className="flex justify-between gap-4 text-sm"
             >
               <div>

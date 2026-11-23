@@ -1,5 +1,5 @@
 import { pool } from "@/lib/db";
-import { Order, OrderItem } from "@/types/order";
+import { Order, OrderDisplay, OrderItem } from "@/types/order";
 import { PoolClient } from "pg";
 
 export const createOrder = async (data: Order, client: PoolClient) => {
@@ -76,8 +76,14 @@ export async function getOrdersBySlug(slug: string) {
   const res = await pool.query(
     `
     SELECT 
-      A.*,
-      B.*,
+      A.id,
+      A.nome_cliente,
+      A.status,
+      A.criado_em,
+      B.id AS item_id,
+      B.nome,
+      B.preco,
+      B.quantidade,
       C.slug
     FROM pedidos AS A
       INNER JOIN
@@ -92,39 +98,32 @@ export async function getOrdersBySlug(slug: string) {
     [slug],
   );
 
-  const orders = new Map<string, Order>();
+  const orders: OrderDisplay[] = [];
 
   for (const row of res.rows) {
-    if (!orders.has(row.id)) {
-      orders.set(row.id, {
+    let order = orders.find(o => o.id === row.id);
+
+    if(!order){
+      order = {
         id: row.id,
-        loja_id: row.loja_id,
         nome_cliente: row.nome_cliente,
-        telefone_cliente: row.telefone_cliente,
-        cep: row.cep,
-        rua: row.rua,
-        numero: row.numero,
-        complemento: row.complemento,
-        bairro: row.bairro,
-        cidade: row.cidade,
-        observacao: row.observacao,
         status: row.status,
         criado_em: row.criado_em,
         items: [],
-      });
+      }
+
+      orders.push(order);
+
     }
 
+    order.items.push({
+      item_id: row.item_id,
+      nome: row.nome,
+      preco: row.preco,
+      quantidade: row.quantidade,
+    })
 
-    orders.get(row.id)!.items.push({
-      id: row.item_id,
-      pedido_id: row.item_pedido_id,
-      nome: row.item_nome,
-      descricao: row.item_descricao,
-      quantidade: row.item_quantidade,
-      preco: row.item_preco,
-      criado_em: row.item_criado_em,
-    });
   }
 
-  return Array.from(orders.values());
+  return orders;
 }

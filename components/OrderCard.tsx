@@ -1,9 +1,9 @@
-import { Order } from "@/types/order";
+import { Order, OrderDisplay } from "@/types/order";
 import OrderStatus from "./OrderStatus";
 
 
 type OrderCardProps = {
-    order: Order;
+    order: OrderDisplay;
     onViewDetails: () => void;
 }
 

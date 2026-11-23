@@ -1,26 +1,16 @@
-export type OrderRow = {
+export type OrderDisplay = {
   id: string;
-  loja_id: string;
   nome_cliente: string;
-  telefone_cliente: string;
-  cep: string;
-  rua: string;
-  numero: string;
-  complemento: string;
-  bairro: string;
-  cidade: string;
-  observacao: string;
   status: OrderStatusType;
   criado_em: string;
+  items: {
+    item_id: string;
+    nome: string;
+    preco: number;
+    quantidade: number;
+  }[];
+}
 
-  item_id: string;
-  item_pedido_id: string;
-  item_nome: string;
-  item_descricao: string;
-  item_preco: number;
-  item_quantidade: number;
-  item_criado_em: string;
-};
 
 export type Order = {
   id: string;

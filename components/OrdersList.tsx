@@ -3,11 +3,11 @@
 import { useState } from "react";
 import OrderCard from "@/components/OrderCard";
 import OrderDetails from "./OrderDetails";
-import { Order } from "@/types/order";
+import { OrderDisplay } from "@/types/order";
 
-export default function OrdersList({ orders }: { orders: Order[] }) {
+export default function OrdersList({ orders }: { orders: OrderDisplay[] }) {
     
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<OrderDisplay | null>(null);
 
   const [filter, setFilter] = useState("todos");
 
