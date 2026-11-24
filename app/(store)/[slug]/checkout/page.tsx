@@ -5,8 +5,9 @@ import { MapPin, UserRound, Truck } from "lucide-react";
 import { useEffect } from "react";
 import { calcularFrete } from "@/lib/calcularFrete";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { CartState } from "@/reducers/cartReducer";
+import toast from "react-hot-toast";
 
 export type CheckoutFormData = {
   nome_cliente: string;
@@ -31,6 +32,8 @@ const labelClass = "mb-1.5 block text-sm font-medium text-gray-700";
 
 export default function CheckoutForm() {
   const { slug } = useParams();
+
+  const router = useRouter();
 
   const {
     register,
@@ -58,8 +61,10 @@ export default function CheckoutForm() {
 
   useEffect(() => {
     (async () => {
-      if (campoCep.length === 8) {
-        const response = await fetch(`/api/cep/${campoCep}`);
+      if (campoCep.length === 9) {
+
+        const cepFormated = campoCep.replace("-", "");
+        const response = await fetch(`/api/cep/${cepFormated}`);
 
         if (!response.ok) {
           return;
@@ -106,6 +111,15 @@ export default function CheckoutForm() {
       },
       body: JSON.stringify(pedido),
     });
+
+    if(!res.ok){
+      toast.error("Não foi possível processar seu pedido. Tente novamente.");
+      return;
+    }
+
+    const pedidoData = await res.json();
+
+    router.push(`/${slug}/pagamento/${pedidoData.id}`);
   };
 
   return (

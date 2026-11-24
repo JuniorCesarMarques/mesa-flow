@@ -1,8 +1,8 @@
 import { pool } from "@/lib/db";
-import { Order, OrderDisplay, OrderItem } from "@/types/order";
+import { CreateOrder, Order, OrderDisplay, OrderItem } from "@/types/order";
 import { PoolClient } from "pg";
 
-export const createOrder = async (data: Order, client: PoolClient) => {
+export const createOrder = async (data: CreateOrder, client: PoolClient) => {
   const res = await client.query(
     `
         INSERT INTO pedidos (
@@ -51,7 +51,7 @@ export async function createOrderItem(data: OrderItem, client: PoolClient) {
   );
 }
 
-export async function createOrderWithItems(data: Order) {
+export async function createOrderWithItems(data: CreateOrder) {
   const client = await pool.connect();
 
   try {
@@ -64,6 +64,9 @@ export async function createOrderWithItems(data: Order) {
     }
 
     await client.query("COMMIT");
+
+    return pedido;
+
   } catch (error) {
     await client.query("ROLLBACK");
     throw error;

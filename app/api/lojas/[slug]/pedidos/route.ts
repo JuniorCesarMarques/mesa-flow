@@ -61,10 +61,9 @@ export async function POST(
       items
     }
 
-    await createOrderWithItems(novoPedido)
+    const pedido = await createOrderWithItems(novoPedido);
 
-
-    return Response.json({message: "Pedido criado com sucesso"}, {status: 200});
+    return Response.json(pedido, {status: 200});
   } catch (err) {
     console.log("Algo deu errado", err);
     return Response.json({});
@@ -84,6 +83,10 @@ export async function GET({params}: {params: Promise<{slug: string}>}){
     }
 
     const session = await getSession();
+
+    if(!session){
+      return;
+    }
 
     const autorizado = loja.user_id === session.user_id;
 

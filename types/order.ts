@@ -1,3 +1,5 @@
+export type CreateOrder =  Omit<Order, "id" | "status" | "criado_em">;
+
 export type OrderDisplay = {
   id: string;
   nome_cliente: string;
