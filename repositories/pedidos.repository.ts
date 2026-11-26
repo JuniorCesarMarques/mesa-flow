@@ -1,5 +1,5 @@
 import { pool } from "@/lib/db";
-import { CreateOrder, Order, OrderDisplay, OrderItem } from "@/types/order";
+import { CreateOrder, OrderDisplay, OrderItem } from "@/types/order";
 import { PoolClient } from "pg";
 
 export const createOrder = async (data: CreateOrder, client: PoolClient) => {
@@ -73,6 +73,25 @@ export async function createOrderWithItems(data: CreateOrder) {
   } finally {
     client.release();
   }
+}
+
+export async function getOrderById(id: string, slug: string){
+  const res = await pool.query(`
+    SELECT 
+      A.id
+    FROM 
+      pedidos AS A
+    INNER JOIN
+      lojas AS B
+    ON
+      A.loja_id = B.id
+    WHERE 
+      A.id = $1 AND
+      B.slug = $2;
+
+    `, [id, slug]);
+
+    return res.rows[0] ?? null;
 }
 
 export async function getOrdersBySlug(slug: string) {

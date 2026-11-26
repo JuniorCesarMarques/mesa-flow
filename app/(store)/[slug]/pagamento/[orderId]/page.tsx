@@ -3,15 +3,14 @@ import { CardPaymentForm } from "@/components/CardPaymentForm";
 export default async function Pagamento({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ orderId: string, slug: string }>;
 }) {
-  const { id } = await params;
+  const { orderId, slug } = await params;
 
-  console.log(id);
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      <CardPaymentForm amount={50} />
+      <CardPaymentForm amount={50} orderId={orderId} slug={slug} />
     </div>
   );
 }

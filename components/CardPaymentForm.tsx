@@ -12,9 +12,11 @@ initMercadoPago(publicKey);
 
 type CardPaymentFormProps = {
   amount: number;
+  orderId: string;
+  slug: string;
 };
 
-export function CardPaymentForm({ amount }: CardPaymentFormProps) {
+export function CardPaymentForm({ amount, orderId, slug }: CardPaymentFormProps) {
   const initialization = {
     amount,
   };
@@ -33,10 +35,31 @@ export function CardPaymentForm({ amount }: CardPaymentFormProps) {
     },
   };
 
-  const onSubmit = async () => {
-    // Ainda não processamos pagamentos nesta etapa.
-    throw new Error("Processamento de pagamento ainda não configurado.");
+  const onSubmit = async (formData: unknown) => {
+
+     const response = await fetch(`/api/lojas/${slug}/pedidos/${orderId}/pagamentos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        formData
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Não foi possível processar o pagamento.");
+    }
+    const data = await response.json();
+
+    console.log(data);
   };
 
-  return <CardPayment customization={customization} initialization={initialization} onSubmit={onSubmit} />;
+  return (
+    <CardPayment
+      customization={customization}
+      initialization={initialization}
+      onSubmit={onSubmit}
+    />
+  );
 }
