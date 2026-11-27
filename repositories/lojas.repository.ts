@@ -31,3 +31,15 @@ export async function getStoreBySlug(slug: string){
 
     return res.rows[0] ?? null;
 }
+
+export async function getStoreOwnerBySlug(slug: string) {
+  const res = await pool.query(`
+    SELECT 
+        id,
+        user_id
+    FROM lojas
+        WHERE slug = $1
+  `, [slug]);
+
+  return res.rows[0] ?? null;
+}
