@@ -1,3 +1,4 @@
+import { encrypt } from "@/lib/crypto";
 import { pool } from "@/lib/db";
 import type { TokenData } from "@/types/payment";
 
@@ -34,8 +35,8 @@ export async function savePaymentIntegration(
   const values = [
     storeId,
     "mercado_pago",
-    tokenData.access_token,
-    tokenData.refresh_token,
+    encrypt(tokenData.access_token),
+    encrypt(tokenData.refresh_token),
     tokenData.public_key,
     tokenData.user_id,
     expiresAt,
@@ -45,3 +46,5 @@ export async function savePaymentIntegration(
 
   return rows[0];
 }
+
+
