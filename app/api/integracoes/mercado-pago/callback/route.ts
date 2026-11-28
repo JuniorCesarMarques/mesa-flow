@@ -1,11 +1,13 @@
 
 import { consumeOAuthAttempt } from "@/repositories/oauth.repository";
+import { savePaymentIntegration } from "@/repositories/pagamento-integracao-repository";
 
 type MercadoPagoTokenResponse = {
   access_token: string;
   refresh_token: string;
   token_type: string;
   expires_in: number;
+  scope: string;
   user_id: number;
   public_key: string;
   live_mode: boolean;
@@ -100,8 +102,7 @@ export async function GET(request: Request) {
   const tokenData =
     (await response.json()) as MercadoPagoTokenResponse;
 
-  // 6. Persistir os tokens associados à loja
-  // Vamos implementar essa parte no próximo passo.
+  await savePaymentIntegration(attempt.loja_id, tokenData);
 
   return Response.json({
     message: "Autorização realizada com sucesso",
