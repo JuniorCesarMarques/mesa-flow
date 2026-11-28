@@ -2,7 +2,7 @@ type Props = {
   storeSlug: string;
 };
 
-export function MercadoPagoConnection({ storeSlug }: Props) {
+export default function MercadoPagoConnection({ storeSlug }: Props) {
   return (
     <a
       href={`/api/lojas/${storeSlug}/integracoes/mercado-pago/conectar`}
